@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دليل خدمات ديوان البلدية الرقمي</title>
+    <!-- استدعاء خط عربي وتصميم الأيقونات -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- الهيدر أو الترويسة -->
+    <header>
+        <div class="container header-content">
+            <h1>🏛️ ديوان البلدية</h1>
+            <nav>
+                <a href="#" class="active">الرئيسية</a>
+                <a href="#services">الخدمات</a>
+                <a href="#about">عن البلدية</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- قسم البحث الرئيسي -->
+    <section class="hero">
+        <div class="container">
+            <h2>دليل خدمات وإجازات ديوان البلدية الرقمي</h2>
+            <p>مرحباً بك، كيف يمكننا خدمتك اليوم؟ ابحث عن أي خدمة...</p>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="ابحث عن اسم الخدمة (مثلاً: رخصة بناء، شهادة سكن...)">
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم عرض الخدمات -->
+    <section id="services" class="container services-section">
+        <h3>الخدمات الأكثر طلباً</h3>
+        <div class="services-grid" id="servicesContainer">
+            <!-- سيتم تعبئة الخدمات تلقائياً عبر ملف الجافاسكريبت -->
+        </div>
+    </section>
+
+    <!-- تذييل الصفحة -->
+    <footer>
+        <p>&copy; 2026 ديوان البلدية - جميع الحقوق محفوظة</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
