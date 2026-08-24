@@ -1,4 +1,3 @@
-// قائمة الخدمات المطلوبة
 const servicesData = [
     {
         title: "استخراج جواز سفر جديد + تجديد",
@@ -39,6 +38,28 @@ const servicesData = [
         ],
         fees: "20.00 د.ل",
         category: "قسم الأحوال المدنية العربان"
+    },
+    {
+        title: "استخراج الرخص التجارية",
+        docs: [
+            "شهادة بالاسم التجاري",
+            "فتح ملف ضريبي",
+            "شهادة بملكية المحل أو عقد إيجار",
+            "موقع إرشادي",
+            "شهادة ميلاد",
+            "موافقة الإصحاح البيئي",
+            "صورة من إثبات الهوية",
+            "عدد 2 صور شخصية",
+            "شهادة بعدم العمل",
+            "شهادة صحية",
+            "الصيدليات والعيادات ورياض الأطفال والمدارس الخاصة والشركات والجهات العاملة في مجال البناء والتشييد ومعامل التحليل ضرورة إحضار موافقة الجهة التابع لها",
+            "السجل التجاري بالنسبة للشركات",
+            "رسوم الرخصة",
+            "رسوم النظافة",
+            "ملف معلق"
+        ],
+        fees: "حسب الرخصة",
+        category: "مكتب الرخص ديوان بلدية العربان"
     }
 ];
 
@@ -91,11 +112,14 @@ window.toggleDocs = function(index) {
 displayServices(servicesData);
 
 // تفعيل البحث الفوري
-searchInput.addEventListener('input', (e) => {
-    const term = e.target.value.toLowerCase();
-    const filtered = servicesData.filter(service => 
-        service.title.toLowerCase().includes(term) || 
-        service.docs.some(doc => doc.toLowerCase().includes(term))
-    );
-    displayServices(filtered);
-});
+if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        const filtered = servicesData.filter(service => 
+            service.title.toLowerCase().includes(term) || 
+            service.docs.some(doc => doc.toLowerCase().includes(term)) ||
+            service.category.toLowerCase().includes(term)
+        );
+        displayServices(filtered);
+    });
+}
