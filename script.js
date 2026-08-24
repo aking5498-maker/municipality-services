@@ -1,4 +1,4 @@
-// قائمة الخدمات مع فصل المستندات في شكل مصفوفة (Array)
+// قائمة الخدمات المطلوبة
 const servicesData = [
     {
         title: "استخراج جواز سفر جديد + تجديد",
@@ -21,55 +21,70 @@ const servicesData = [
         category: "قسم جوازات العربان"
     },
     {
-        title: "استخراج البطاقة الشخصية",
+        title: "استخراج بطاقة شخصية",
         docs: [
             "شهادة ميلاد",
+            "عدد ( 2 ) صور شخصية",
+            "جواز سفر سابق + صورة منه",
             "شهادة إقامة",
-            "شهادة وضع عائلي",
-            "عدد ( 4 ) صور شخصية",
-            "نموذج استخراج البطاقات",
-            "صورة من الجواز السفر",
             "إفادة بالعمل (الموظف: رسالة من جهة العمل - الطالب: تعريف مدرسي - العسكري: موافقة امنية - في حالة عمل حر او ربة بيت إفادة من القوة العاملة)",
-            "صورة ضوئية من كتيب العائلة ( رب الأسرة - المعني - صفحة رقم 4 - صفحة رقم 45 )", 
+            "صورة ضوئية من كتيب العائلة ( رب الأسرة - المعني - صفحة رقم 4 - صفحة رقم 45 )",
+            "في حالة عدم وجود كتيب شهادة ميلاد بخط اليد من السجل المدني",
+            "صورة من البطاقة الشخصية",
             "رسالة علم وخبر بالاقامة من شيخ المحلة",
-            "فصيلة الدم",    
-            "صورة من الجنسية + الاصل لمن والده مولود خارج ليبيا"
+            "نموذج ترجمة باللغة الانجليزية",
+            "نموذج استخراج جواز سفر",
+            "صورة من الجنسية + الاصل لمن والده مولود خارج ليبيا",
+            "شهادة وضع عائلي"
         ],
-        fees: "10.50 د.ل",
-        category: "قسم الاحوال المدنية العربان"
+        fees: "20.00 د.ل",
+        category: "قسم الأحوال المدنية العربان"
     }
 ];
 
 const servicesContainer = document.getElementById('servicesContainer');
 const searchInput = document.getElementById('searchInput');
 
-// دالة لعرض الخدمات مع ترتيب المستندات في أسطر منفصلة
 function displayServices(list) {
     servicesContainer.innerHTML = "";
     if (list.length === 0) {
-        servicesContainer.innerHTML = "<p>عذراً، لم نجد خدمة تطابق بحثك.</p>";
+        servicesContainer.innerHTML = "<p style='text-align: center; color: #777;'>عذراً، لم نجد خدمة تطابق بحثك.</p>";
         return;
     }
     
-    list.forEach(service => {
-        // تحويل قائمة المستندات إلى عناصر HTML من نوع قائمة نقطية (<li>)
+    list.forEach((service, index) => {
         let docsListHTML = service.docs.map(doc => `<li>${doc}</li>`).join('');
 
         const card = document.createElement('div');
         card.classList.add('service-card');
         card.innerHTML = `
-            <h4>${service.title}</h4>
-            <div class="docs-section">
-                <strong>المستندات المطلوبة:</strong>
-                <ul style="margin-right: 20px; margin-top: 5px; margin-bottom: 10px; font-size: 14px; color: #555;">
+            <div class="service-header" onclick="toggleDocs(${index})">
+                <div class="service-title-area">
+                    <h4>${service.title}</h4>
+                    <p>القسم المختص: ${service.category}</p>
+                </div>
+                <span style="color: #1e73e8; font-size: 13px; font-weight: 600;">عرض المستندات 🔽</span>
+            </div>
+            
+            <div class="service-badges">
+                <span class="badge">💰 الرسوم: ${service.fees}</span>
+            </div>
+
+            <div class="docs-container" id="docs-${index}">
+                <strong style="font-size: 13px; color: #333; display: block; margin-bottom: 8px;">المستندات المطلوبة:</strong>
+                <ul>
                     ${docsListHTML}
                 </ul>
             </div>
-            <p><strong>الرسوم:</strong> ${service.fees}</p>
-            <a href="#" class="details-btn" onclick="alert('القسم المختص: ${service.category}')">عرض التفاصيل</a>
         `;
         servicesContainer.appendChild(card);
     });
+}
+
+// دالة فتح وإغلاق المستندات عند الضغط
+window.toggleDocs = function(index) {
+    const docsDiv = document.getElementById(`docs-${index}`);
+    docsDiv.classList.toggle('show');
 }
 
 // عرض جميع الخدمات عند فتح الصفحة
