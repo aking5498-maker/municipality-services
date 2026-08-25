@@ -1,5 +1,75 @@
 const servicesData = [
     {
+        title: "حالة محطة العربان الشرقية (161)",
+        docs: [
+            "متوفر وقود البنزين والديزل (بدون مستندات مطلوبة)"
+        ],
+        fees: "0.150 دينار / للتر",
+        category: "محطات الوقود - ديوان البلدية",
+        status: "available",
+        statusText: "متوفر حالياً (بنزين)"
+    },
+    {
+        title: "حالة محطة العربان الغربية (153)",
+        docs: [
+            "متوفر وقود البنزين والديزل (بدون مستندات مطلوبة)"
+        ],
+        fees: "0.150 دينار / للتر",
+        category: "محطات الوقود - ديوان البلدية",
+        status: "closed",
+        statusText: "غير متوفر حالياً (مغلق)"
+    },
+    {
+        title: "تعبئة الغاز - مستودع جلوال (قماطة)",
+        docs: [
+            "إحضار أسطوانة الغاز الفارغة فقط"
+        ],
+        fees: "5 دينار",
+        category: "مستودعات الغاز - قماطة",
+        status: "available",
+        statusText: "متوفر للتوزيع حالياً"
+    },
+    {
+        title: "تعبئة الغاز - مستودع لبز (أولاد بريك)",
+        docs: [
+            "إحضار أسطوانة الغاز الفارغة فقط"
+        ],
+        fees: "5 دينار",
+        category: "مستودعات الغاز - أولاد بريك",
+        status: "closed",
+        statusText: "غير متوفر حالياً"
+    },
+    {
+        title: "تعبئة الغاز - مستودع صبيخة (أولاد بريك)",
+        docs: [
+            "إحضار أسطوانة الغاز الفارغة فقط"
+        ],
+        fees: "5 دينار",
+        category: "مستودعات الغاز - أولاد بريك",
+        status: "closed",
+        statusText: "غير متوفر حالياً"
+    },
+    {
+        title: "تعبئة الغاز - مستودع جميد (أولاد بريك)",
+        docs: [
+            "إحضار أسطوانة الغاز الفارغة فقط"
+        ],
+        fees: "5 دينار",
+        category: "مستودعات الغاز - أولاد بريك",
+        status: "closed",
+        statusText: "غير متوفر حالياً"
+    },
+    {
+        title: "تعبئة الغاز - مستودع الطير (أولاد بريك)",
+        docs: [
+            "إحضار أسطوانة الغاز الفارغة فقط"
+        ],
+        fees: "5 دينار",
+        category: "مستودعات الغاز - أولاد بريك",
+        status: "closed",
+        statusText: "غير متوفر حالياً"
+    },
+    {
         title: "استخراج جواز سفر جديد + تجديد",
         docs: [
             "شهادة ميلاد",
@@ -90,6 +160,21 @@ function displayServices(list) {
     list.forEach((service, index) => {
         let docsListHTML = service.docs.map(doc => `<li>${doc}</li>`).join('');
 
+        let statusBadgeHTML = '';
+        if (service.status) {
+            const isAvailable = service.status === 'available';
+            const statusBg = isAvailable ? '#d4edda' : '#f8d7da';
+            const statusColor = isAvailable ? '#155724' : '#721c24';
+            const dotColor = isAvailable ? '#28a745' : '#dc3545';
+            
+            statusBadgeHTML = `
+                <div style="display: inline-flex; align-items: center; gap: 6px; background: ${statusBg}; color: ${statusColor}; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; margin-bottom: 10px;">
+                    <span style="width: 8px; height: 8px; background-color: ${dotColor}; border-radius: 50%; display: inline-block;"></span>
+                    <span>${service.statusText}</span>
+                </div>
+            `;
+        }
+
         const card = document.createElement('div');
         card.classList.add('service-card');
         card.innerHTML = `
@@ -98,15 +183,16 @@ function displayServices(list) {
                     <h4>${service.title}</h4>
                     <p>القسم المختص: ${service.category}</p>
                 </div>
-                <span style="color: #1e73e8; font-size: 13px; font-weight: 600;">عرض المستندات 🔽</span>
+                <span style="color: #1e73e8; font-size: 13px; font-weight: 600;">عرض التفاصيل 🔽</span>
             </div>
             
-            <div class="service-badges">
+            <div class="service-badges" style="display: flex; flex-direction: column; align-items: flex-start;">
+                ${statusBadgeHTML}
                 <span class="badge">💰 الرسوم: ${service.fees}</span>
             </div>
 
             <div class="docs-container" id="docs-${index}">
-                <strong style="font-size: 13px; color: #333; display: block; margin-bottom: 8px;">المستندات المطلوبة:</strong>
+                <strong style="font-size: 13px; color: #333; display: block; margin-bottom: 8px;">ملاحظات / المستندات:</strong>
                 <ul>
                     ${docsListHTML}
                 </ul>
@@ -116,7 +202,6 @@ function displayServices(list) {
     });
 }
 
-// دالة فتح وإغلاق المستندات عند الضغط
 window.toggleDocs = function(index) {
     const docsDiv = document.getElementById(`docs-${index}`);
     if (docsDiv) {
@@ -124,17 +209,16 @@ window.toggleDocs = function(index) {
     }
 }
 
-// عرض جميع الخدمات عند فتح الصفحة
 displayServices(servicesData);
 
-// تفعيل البحث الفوري
 if (searchInput) {
     searchInput.addEventListener('input', (e) => {
         const term = e.target.value.toLowerCase();
         const filtered = servicesData.filter(service => 
             service.title.toLowerCase().includes(term) || 
             service.docs.some(doc => doc.toLowerCase().includes(term)) ||
-            service.category.toLowerCase().includes(term)
+            service.category.toLowerCase().includes(term) ||
+            (service.statusText && service.statusText.toLowerCase().includes(term))
         );
         displayServices(filtered);
     });
