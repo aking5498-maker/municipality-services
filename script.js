@@ -1,6 +1,8 @@
 const servicesData = [
+    // محطات الوقود
     {
         title: "حالة محطة العربان الشرقية (161)",
+        type: "fuel-gas",
         docs: [
             "متوفر وقود البنزين والديزل (بدون مستندات مطلوبة)"
         ],
@@ -11,6 +13,7 @@ const servicesData = [
     },
     {
         title: "حالة محطة العربان الغربية (153)",
+        type: "fuel-gas",
         docs: [
             "متوفر وقود البنزين والديزل (بدون مستندات مطلوبة)"
         ],
@@ -19,8 +22,10 @@ const servicesData = [
         status: "closed",
         statusText: "غير متوفر حالياً (مغلق)"
     },
+    // مستودعات الغاز
     {
         title: "تعبئة الغاز - مستودع جلوال (قماطة)",
+        type: "fuel-gas",
         docs: [
             "إحضار أسطوانة الغاز الفارغة فقط"
         ],
@@ -31,6 +36,7 @@ const servicesData = [
     },
     {
         title: "تعبئة الغاز - مستودع لبز (أولاد بريك)",
+        type: "fuel-gas",
         docs: [
             "إحضار أسطوانة الغاز الفارغة فقط"
         ],
@@ -41,6 +47,7 @@ const servicesData = [
     },
     {
         title: "تعبئة الغاز - مستودع صبيخة (أولاد بريك)",
+        type: "fuel-gas",
         docs: [
             "إحضار أسطوانة الغاز الفارغة فقط"
         ],
@@ -51,6 +58,7 @@ const servicesData = [
     },
     {
         title: "تعبئة الغاز - مستودع جميد (أولاد بريك)",
+        type: "fuel-gas",
         docs: [
             "إحضار أسطوانة الغاز الفارغة فقط"
         ],
@@ -61,6 +69,7 @@ const servicesData = [
     },
     {
         title: "تعبئة الغاز - مستودع الطير (أولاد بريك)",
+        type: "fuel-gas",
         docs: [
             "إحضار أسطوانة الغاز الفارغة فقط"
         ],
@@ -69,8 +78,27 @@ const servicesData = [
         status: "closed",
         statusText: "غير متوفر حالياً"
     },
+    // الخدمات الإدارية والمصرفية
+    {
+        title: "فتح حساب مصرف الصحاري - العربان",
+        type: "official",
+        docs: [
+            "الحضور الشخصي لتعبئة نموذج فتح الحساب",
+            "شهادة ميلاد حديثة من السجل المدني",
+            "عدد (2) صور شخصية",
+            "صورة من الاثبات الشخصي (جواز سفر او بطاقة شخصية)",
+            "رقم الهاتف لصاحب الحساب",
+            "رسالة من جهة العمل أو شيخ المحلة",
+            "الحضور الشخصي لصاحب الحساب للتوقيع"
+        ],
+        fees: "",
+        category: "مصرف الصحاري - فرع العربان",
+        status: "available",
+        statusText: "الخدمة متاحة"
+    },
     {
         title: "استخراج جواز سفر جديد + تجديد",
+        type: "official",
         docs: [
             "شهادة ميلاد",
             "عدد ( 2 ) صور شخصية",
@@ -91,6 +119,7 @@ const servicesData = [
     },
     {
         title: "استخراج بطاقة شخصية",
+        type: "official",
         docs: [
             "شهادة ميلاد",
             "عدد ( 2 ) صور شخصية",
@@ -111,6 +140,7 @@ const servicesData = [
     },
     {
         title: "استخراج الرخص التجارية",
+        type: "official",
         docs: [
             "شهادة بالاسم التجاري",
             "فتح ملف ضريبي",
@@ -133,6 +163,7 @@ const servicesData = [
     },
     {
         title: "اصدار رخصة القيادة",
+        type: "official",
         docs: [
             "شهادة الحالة الجنائية",
             "صورة من كتيب العائلة",
@@ -148,6 +179,7 @@ const servicesData = [
 
 const servicesContainer = document.getElementById('servicesContainer');
 const searchInput = document.getElementById('searchInput');
+let currentCategory = 'all';
 
 function displayServices(list) {
     if (!servicesContainer) return;
@@ -175,6 +207,9 @@ function displayServices(list) {
             `;
         }
 
+        // إخفاء خانة الرسوم إذا كانت فارغة تماماً
+        let feesHTML = service.fees ? `<span class="badge">💰 الرسوم: ${service.fees}</span>` : '';
+
         const card = document.createElement('div');
         card.classList.add('service-card');
         card.innerHTML = `
@@ -188,7 +223,7 @@ function displayServices(list) {
             
             <div class="service-badges" style="display: flex; flex-direction: column; align-items: flex-start;">
                 ${statusBadgeHTML}
-                <span class="badge">💰 الرسوم: ${service.fees}</span>
+                ${feesHTML}
             </div>
 
             <div class="docs-container" id="docs-${index}">
@@ -202,6 +237,43 @@ function displayServices(list) {
     });
 }
 
+// دالة فلترة التصنيفات عبر الأزرار
+window.filterCategory = function(category, btn) {
+    currentCategory = category;
+    
+    // تغيير شكل الأزرار النشطة
+    document.querySelectorAll('.filter-btn').forEach(b => {
+        b.style.background = '#e0e0e0';
+        b.style.color = '#333';
+    });
+    btn.style.background = '#1e73e8';
+    btn.style.color = '#fff';
+
+    applyFilter();
+}
+
+function applyFilter() {
+    let filtered = servicesData;
+    
+    // فلترة حسب التصنيف
+    if (currentCategory !== 'all') {
+        filtered = filtered.filter(s => s.type === currentCategory);
+    }
+
+    // فلترة حسب البحث إن وُجد نص في مربع البحث
+    if (searchInput && searchInput.value.trim() !== '') {
+        const term = searchInput.value.toLowerCase().trim();
+        filtered = filtered.filter(service => 
+            service.title.toLowerCase().includes(term) || 
+            service.docs.some(doc => doc.toLowerCase().includes(term)) ||
+            service.category.toLowerCase().includes(term) ||
+            (service.statusText && service.statusText.toLowerCase().includes(term))
+        );
+    }
+
+    displayServices(filtered);
+}
+
 window.toggleDocs = function(index) {
     const docsDiv = document.getElementById(`docs-${index}`);
     if (docsDiv) {
@@ -209,17 +281,12 @@ window.toggleDocs = function(index) {
     }
 }
 
+// العرض الأولي
 displayServices(servicesData);
 
+// تفعيل البحث الفوري مع الأزرار
 if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-        const term = e.target.value.toLowerCase();
-        const filtered = servicesData.filter(service => 
-            service.title.toLowerCase().includes(term) || 
-            service.docs.some(doc => doc.toLowerCase().includes(term)) ||
-            service.category.toLowerCase().includes(term) ||
-            (service.statusText && service.statusText.toLowerCase().includes(term))
-        );
-        displayServices(filtered);
+    searchInput.addEventListener('input', () => {
+        applyFilter();
     });
 }
