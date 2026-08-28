@@ -3,78 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دليل خدمات بلدية العربان</title>
-    
-    <!-- الأيقونات الخاصة بالشعار عند الحفظ على الشاشة الرئيسية للهاتف -->
-    <link rel="icon" type="image/png" href="https://github.com/aking5498-maker/municipality-services/blob/main/logo.png?raw=true">
-    <link rel="apple-touch-icon" href="https://github.com/aking5498-maker/municipality-services/blob/main/logo.png?raw=true">
-
-    <!-- استدعاء خط عربي -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>دليلك - خدمات ديوان بلدية العربان</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- الهيدر أو الترويسة المحدثة -->
-    <header>
-        <div class="container header-content" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-            
-            <!-- الشعار والاسم -->
-            <div class="logo-area" style="display: flex; align-items: center; gap: 12px;">
-                <img src="https://github.com/aking5498-maker/municipality-services/blob/main/logo.png?raw=true" alt="شعار البلدية" style="height: 50px; width: 50px; object-fit: cover; border-radius: 12px; background: white; padding: 2px;">
-                <div style="display: flex; flex-direction: column;">
-                    <span style="font-weight: bold; font-size: 17px; color: #fff; line-height: 1.2;">بلدية العربان</span>
-                    <span style="font-size: 11px; color: rgba(255, 255, 255, 0.85); margin-top: 2px;">اعرف وجهتك واعرف أوراقك | تصميم: م. عبدالباري فرحات</span>
-                </div>
-            </div>
+    <!-- تنبيه مخصص في أعلى الصفحة -->
+    <div style="background: #fff3cd; color: #856404; padding: 10px 15px; text-align: center; font-size: 13px; font-weight: bold; border-bottom: 1px solid #ffeeba;">
+        ⚠️ تنبيه: يتم تحديث حالات محطات الوقود ومستودعات الغاز بشكل دوري حسب توفر الإمدادات.
+    </div>
 
-            <!-- زر متصل وعلامة الجرس -->
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <div style="display: flex; align-items: center; gap: 6px; background: rgba(255, 255, 255, 0.15); padding: 6px 14px; border-radius: 20px; color: #fff; font-size: 13px; font-weight: 600;">
-                    <span style="width: 9px; height: 9px; background-color: #2ecc71; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #2ecc71;"></span>
-                    <span>متصل</span>
-                </div>
-                
-                <div style="background: rgba(255, 255, 255, 0.15); width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; cursor: pointer;">
-                    <!-- أيقونة الجرس SVG -->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-                </div>
-            </div>
+    <div class="container">
+        <!-- رأس الصفحة -->
+        <header class="site-header">
+            <h1>دليلك - خدمات ديوان بلدية العربان</h1>
+            <p>دليلك الشامل لمعرفة المستندات والرسوم الخاصة بالخدمات الحكومية</p>
+        </header>
 
-            <!-- القائمة -->
-            <nav style="display: flex; gap: 15px;">
-                <a href="#" class="active">الرئيسية</a>
-                <a href="#services">الخدمات</a>
-            </nav>
+        <!-- زر مشاركة المنظومة عبر واتساب -->
+        <div style="text-align: center; margin-bottom: 20px;">
+            <a href="https://api.whatsapp.com/send?text=دليل خدمات بلدية العربان - تعرف على المستندات وحالة المحطات والغاز عبر الرابط التالي:" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; background: #25d366; color: #fff; padding: 8px 18px; border-radius: 25px; text-decoration: none; font-weight: bold; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <span>📱 مشاركة الدليل عبر واتساب</span>
+            </a>
         </div>
-    </header>
 
-    <!-- قسم البحث الرئيسي -->
-    <section class="hero">
-        <div class="container">
-            <h2>دليل خدمات بلدية العربان</h2>
-            <p>مرحباً بك، كيف يمكننا خدمتك اليوم؟ ابحث عن أي خدمة...</p>
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="ابحث عن الخدمة (مثلاً: استخراج بطاقة، جواز سفر...)">
-            </div>
+        <!-- مربع البحث -->
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="ابحث عن خدمة، مستند، أو محطة...">
         </div>
-    </section>
 
-    <!-- قسم عرض الخدمات مباشرة -->
-    <section id="services" class="container services-section" style="margin-top: 20px;">
-        <h3>الخدمات الأكثر طلباً</h3>
-        <div class="services-grid" id="servicesContainer">
-            <!-- سيتم تعبئة الخدمات تلقائياً عبر ملف الجافاسكريبت -->
+        <!-- حاوية الخدمات -->
+        <div id="servicesContainer" class="services-grid">
+            <!-- سيتم تعبئة الخدمات تلقائياً عبر JavaScript -->
         </div>
-    </section>
 
-    <!-- تذييل الصفحة -->
-    <footer>
-        <p>&copy; 2026 بلدية العربان - جميع الحقوق محفوظة</p>
-        <p style="margin-top: 5px; font-size: 12px; color: #555555;">
-            تصميم وتطوير: <span style="color: #0066cc; font-weight: 600;">م. عبدالباري فرحات</span>
-        </p>
-    </footer>
+        <!-- تذييل الصفحة -->
+        <footer class="site-footer" style="text-align: center; margin-top: 30px; padding: 20px; font-size: 13px; color: #666; border-top: 1px solid #eee;">
+            <p style="margin-bottom: 8px;">جميع الحقوق محفوظة © ديوان بلدية العربان</p>
+            <p style="margin-bottom: 8px;">
+                رابط الصفحة الرسمية: <a href="https://www.facebook.com/share/19ZkctWNzC/?mibextid=wwXIfr" target="_blank" style="color: #1e73e8; text-decoration: none; font-weight: bold;">ديوان بلدية العربان على الفيسبوك</a>
+            </p>
+            <p style="color: #888; font-size: 12px;">
+                <span>📅 آخر تحديث للبيانات: 28 أغسطس 2026</span> | 
+                <span id="visitCount">👀 عدد الزيارات: 1,428</span>
+            </p>
+        </footer>
+    </div>
 
     <script src="script.js"></script>
 </body>
