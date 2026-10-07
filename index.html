@@ -3,99 +3,447 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دليل خدمات بلدية العربان</title>
-    
-    <!-- الأيقونات الخاصة بالشعار عند الحفظ على الشاشة الرئيسية للهاتف -->
-    <link rel="icon" type="image/png" href="https://github.com/aking5498-maker/municipality-services/blob/main/logo.png?raw=true">
-    <link rel="apple-touch-icon" href="https://github.com/aking5498-maker/municipality-services/blob/main/logo.png?raw=true">
-
-    <!-- استدعاء خط عربي -->
+    <title>منصة صوت العربان</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+        body {
+            background-color: #f0f4f8;
+            color: #333;
+            line-height: 1.6;
+        }
+        /* الشريط العلوي */
+        .top-bar {
+            background-color: #0b3c5d;
+            color: #fff;
+            padding: 8px 20px;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .dot {
+            width: 9px;
+            height: 9px;
+            background-color: #2ecc71;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 5px #2ecc71;
+        }
+        
+        /* الترويسة الرئيسية */
+        header {
+            background: linear-gradient(135deg, #0d47a1, #1976d2);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-container {
+            width: 90px;
+            height: 90px;
+            background: white;
+            border-radius: 50%;
+            padding: 3px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 2px;
+            font-weight: 700;
+        }
+        header p {
+            font-size: 14px;
+            opacity: 0.95;
+        }
+
+        /* شريط التنقل (تمت إزالة الصفحة الرئيسية) */
+        nav {
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            flex-wrap: wrap;
+        }
+        .nav-btn {
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1976d2;
+            padding: 8px 22px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover, .nav-btn.active {
+            background-color: #1976d2;
+            color: white;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            display: none;
+        }
+        .card.active-view {
+            display: block;
+        }
+        .card h2 {
+            color: #0d47a1;
+            margin-bottom: 20px;
+            font-size: 22px;
+            border-bottom: 2px solid #e3f2fd;
+            padding-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cfd8dc;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: #1976d2;
+            outline: none;
+            box-shadow: 0 0 5px rgba(25, 118, 210, 0.2);
+        }
+        
+        /* زر إرسال الواتساب */
+        .btn-whatsapp {
+            background-color: #25d366;
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-whatsapp:hover {
+            background-color: #1ebe5d;
+        }
+
+        /* شبكة أرقام تهمك */
+        .grid-contacts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 15px;
+        }
+        .contact-box {
+            background: #f8fbff;
+            border: 1px solid #bbdefb;
+            padding: 18px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .contact-box h3 {
+            font-size: 16px;
+            color: #0d47a1;
+            margin-bottom: 5px;
+        }
+        .contact-box p {
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 12px;
+        }
+        .contact-box a {
+            display: inline-block;
+            background-color: #e3f2fd;
+            color: #0d47a1;
+            padding: 6px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        .contact-box a:hover {
+            background-color: #bbdefb;
+        }
+
+        .about-content {
+            font-size: 15px;
+            color: #444;
+            line-height: 1.8;
+        }
+        .about-content p {
+            margin-bottom: 15px;
+        }
+
+        /* عداد الزيارات */
+        .visitor-counter {
+            background-color: #1b365d;
+            color: #64ffda;
+            padding: 8px 18px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            background-color: #0a192f;
+            color: #8892b0;
+            font-size: 13px;
+            margin-top: 50px;
+        }
+        footer span {
+            color: #fff;
+            font-weight: 600;
+        }
+        .info-note {
+            background-color: #e3f2fd;
+            color: #0d47a1;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
 
-    <!-- تنبيه مخصص في أعلى الصفحة -->
-    <div style="background: #fff3cd; color: #856404; padding: 10px 15px; text-align: center; font-size: 13px; font-weight: bold; border-bottom: 1px solid #ffeeba;">
-        ⚠️ تنبيه: يتم تحديث حالات محطات الوقود ومستودعات الغاز بشكل دوري حسب توفر الإمدادات.
+    <!-- شريط الحالة العلوي -->
+    <div class="top-bar">
+        <div class="status-indicator">
+            <span class="dot"></span>
+            <span>بوابة بلدية العربان - متصل</span>
+        </div>
+        <div>
+            <span>🔔 نظام الطوارئ نشط</span>
+        </div>
     </div>
 
-    <!-- الهيدر أو الترويسة المحدثة -->
     <header>
-        <div class="container header-content" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-            
-            <!-- الشعار والاسم -->
-            <div class="logo-area" style="display: flex; align-items: center; gap: 12px;">
-                <img src="https://github.com/aking5498-maker/municipality-services/blob/main/logo.png?raw=true" alt="شعار البلدية" style="height: 50px; width: 50px; object-fit: cover; border-radius: 12px; background: white; padding: 2px;">
-                <div style="display: flex; flex-direction: column;">
-                    <span style="font-weight: bold; font-size: 17px; color: #fff; line-height: 1.2;">بلدية العربان</span>
-                    <span style="font-size: 11px; color: rgba(255, 255, 255, 0.85); margin-top: 2px;">اعرف وجهتك واعرف أوراقك | تصميم: م. عبدالباري فرحات</span>
-                </div>
-            </div>
-
-            <!-- زر متصل وعلامة الجرس -->
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <div style="display: flex; align-items: center; gap: 6px; background: rgba(255, 255, 255, 0.15); padding: 6px 14px; border-radius: 20px; color: #fff; font-size: 13px; font-weight: 600;">
-                    <span style="width: 9px; height: 9px; background-color: #2ecc71; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #2ecc71;"></span>
-                    <span>متصل</span>
-                </div>
-                
-                <div style="background: rgba(255, 255, 255, 0.15); width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; cursor: pointer;">
-                    <!-- أيقونة الجرس SVG -->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-                </div>
-            </div>
-
-            <!-- القائمة -->
-            <nav style="display: flex; gap: 15px;">
-                <a href="#" class="active">الرئيسية</a>
-                <a href="#services">الخدمات</a>
-            </nav>
+        <div class="logo-container">
+            <!-- ضع اسم صورة شعار البلدية هنا -->
+            <img src="image.png" alt="شعار بلدية العربان">
         </div>
+        <h1>بلدية العربان</h1>
+        <p>منصة صوت العربان - لتقديم البلاغات والخدمات المجتمعية</p>
     </header>
 
-    <!-- قسم البحث الرئيسي -->
-    <section class="hero">
-        <div class="container">
-            <h2>دليل خدمات بلدية العربان</h2>
-            <p>مرحباً بك، كيف يمكننا خدمتك اليوم؟ ابحث عن أي خدمة...</p>
+    <nav>
+        <button class="nav-btn active" onclick="switchTab('reportTab', this)">تقديم بلاغ</button>
+        <button class="nav-btn" onclick="switchTab('contactsTab', this)">أرقام تهمك</button>
+        <button class="nav-btn" onclick="switchTab('aboutTab', this)">من نحن</button>
+    </nav>
+
+    <div class="container">
+        
+        <!-- واجهة تقديم بلاغ -->
+        <div id="reportTab" class="card active-view">
+            <h2>تقديم بلاغ جديد</h2>
+            <div class="info-note">
+                ملاحظة: عند الضغط على إرسال سيتم تحويلك مباشرة لتطبيق الواتساب الخاص بمشرف المنصة لإرسال البلاغ بشكل فوري.
+            </div>
             
-            <!-- زر مشاركة المنظومة عبر واتساب -->
-            <div style="margin-top: 15px; margin-bottom: 5px;">
-                <a href="https://api.whatsapp.com/send?text=دليل خدمات بلدية العربان - تعرف على المستندات وحالة المحطات والغاز عبر الرابط التالي:" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; background: #25d366; color: #fff; padding: 8px 18px; border-radius: 25px; text-decoration: none; font-weight: bold; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-                    <span>📱 مشاركة المنظومة عبر واتساب</span>
-                </a>
-            </div>
+            <form id="reportForm" onsubmit="sendToWhatsApp(event)">
+                <div class="form-group">
+                    <label for="citizenName">اسم المواطن (اختياري)</label>
+                    <input type="text" id="citizenName" placeholder="أدخل اسمك الكريم">
+                </div>
 
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="ابحث عن الخدمة (مثلاً: استخراج بطاقة، جواز سفر...)">
+                <div class="form-group">
+                    <label for="incidentLocation">مكان الحادثة / المشكلة <span style="color: red;">*</span></label>
+                    <input type="text" id="incidentLocation" required placeholder="اكتب مكان المشكلة بوضوح...">
+                </div>
+
+                <div class="form-group">
+                    <label for="landmark">أقرب نقطة دالة (علامة مميزة) <span style="color: red;">*</span></label>
+                    <input type="text" id="landmark" required placeholder="مثال: بجانب مسجد، قرب مدرسة...">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">رقم هاتف المبلغ (اختياري)</label>
+                    <input type="tel" id="phone" placeholder="091xxxxxxx">
+                </div>
+
+                <div class="form-group">
+                    <label for="description">وصف المشكلة تفصيلياً <span style="color: red;">*</span></label>
+                    <textarea id="description" rows="4" required placeholder="اشرح تفاصيل المشكلة باختصار..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="incidentImage">إرفاق صورة للحادثة (اختياري)</label>
+                    <input type="file" id="incidentImage" accept="image/*">
+                </div>
+
+                <button type="submit" class="btn-whatsapp">
+                    <span>إرسال البلاغ عبر الواتساب للمشرف</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- واجهة أرقام تهمك -->
+        <div id="contactsTab" class="card">
+            <h2>أرقام تهمك (دليل الجهات الخدمية)</h2>
+            <div class="grid-contacts">
+                <div class="contact-box">
+                    <h3>جهاز الحرس البلدي</h3>
+                    <p>فرع بلدية العربان</p>
+                    <a href="tel:">اتصال مباشر</a>
+                </div>
+                <div class="contact-box">
+                    <h3>شركة الكهرباء</h3>
+                    <p>مكتب خدمات الكهرباء العربان</p>
+                    <a href="tel:">اتصال مباشر</a>
+                </div>
+                <div class="contact-box">
+                    <h3>مستشفى العربان العام</h3>
+                    <p>الطوارئ والإسعاف</p>
+                    <a href="tel:">اتصال مباشر</a>
+                </div>
+                <div class="contact-box">
+                    <h3>مستشفى العربان الشرقية</h3>
+                    <p>الخدمات الطبية</p>
+                    <a href="tel:">اتصال مباشر</a>
+                </div>
+                <div class="contact-box">
+                    <h3>مستشفى العربان التخصصي</h3>
+                    <p>صحة الأسرة</p>
+                    <a href="tel:">اتصال مباشر</a>
+                </div>
+                <div class="contact-box">
+                    <h3>مركز شرطة العربان الشرقية</h3>
+                    <p>الطوارئ الأمنية</p>
+                    <a href="tel:">اتصال مباشر</a>
+                </div>
+                <div class="contact-box">
+                    <h3>مركز شرطة العربان الغربية</h3>
+                    <p>الطوارئ الأمنية</p>
+                    <a href="tel:">اتصال مباشر</a>
+                </div>
             </div>
         </div>
-    </section>
 
-    <!-- قسم عرض الخدمات مباشرة -->
-    <section id="services" class="container services-section" style="margin-top: 20px;">
-        <h3>الخدمات الأكثر طلباً</h3>
-        <div class="services-grid" id="servicesContainer">
-            <!-- سيتم تعبئة الخدمات تلقائياً عبر ملف الجافاسكريبت -->
+        <!-- واجهة من نحن -->
+        <div id="aboutTab" class="card">
+            <h2>من نحن</h2>
+            <div class="about-content">
+                <p><strong>منصة صوت العربان</strong> هي منصة خدمة مجتمعية مستقلة وتطوعية، تهدف إلى تسهيل التواصل الفعال بين المواطن ومسؤول المنصة لإيصال البلاغات والشكاوى الخدمية بسرعة واحترافية.</p>
+                <p>تسعى المنصة للمساهمة في تحسين جودة الخدمات العامة وتسريع الاستجابة للمشاكل الطارئة داخل نطاق بلدية العربان.</p>
+                <p style="color: #666; font-size: 13px; margin-top: 20px;"><em>ملاحظة: منصة خدمية تطوعية مستقلة وليست جهة حكومية رسمية.</em></p>
+            </div>
         </div>
-    </section>
 
-    <!-- تذييل الصفحة -->
+    </div>
+
     <footer>
-        <p style="margin-bottom: 6px;">&copy; 2026 بلدية العربان - جميع الحقوق محفوظة</p>
-        <p style="margin-bottom: 6px;">
-            رابط الصفحة الرسمية: <a href="https://www.facebook.com/share/19ZkctWNzC/?mibextid=wwXIfr" target="_blank" style="color: #0066cc; text-decoration: none; font-weight: bold;">ديوان بلدية العربان على الفيسبوك</a>
-        </p>
-        <p style="font-size: 12px; color: #555555;">
-            <span>📅 آخر تحديث للبيانات: 28 أغسطس 2026</span> | 
-            <span id="visitCount">👀 عدد الزيارات: 1,428</span>
-        </p>
-        <p style="margin-top: 5px; font-size: 12px; color: #555555;">
-            تصميم وتطوير: <span style="color: #0066cc; font-weight: 600;">م. عبدالباري فرحات</span>
-        </p>
+        <p>تم تصميم وبرمجة المنصة بواسطة: <span>م. عبدالباري سعدون فرحات</span></p>
+        <p style="margin-top: 8px;">رقم الهاتف / واتساب: <a href="tel:0919892021" style="color: #64ffda; text-decoration: none; font-weight: bold;">0919892021</a></p>
+        
+        <div class="visitor-counter">
+            👁️ عدد زوار المنصة: <span id="visitorCount">1</span>
+        </div>
+        
+        <p style="margin-top: 12px; font-size: 12px; opacity: 0.7;">منصة مستقلة تطوعية لخدمة المجتمع وليست جهة حكومية رسمية</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        function switchTab(tabId, btnElement) {
+            document.querySelectorAll('.card').forEach(card => card.classList.remove('active-view'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active-view');
+            btnElement.classList.add('active');
+        }
+
+        function sendToWhatsApp(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('citizenName').value || 'غير محدد';
+            const location = document.getElementById('incidentLocation').value;
+            const landmark = document.getElementById('landmark').value;
+            const phone = document.getElementById('phone').value || 'غير محدد';
+            const desc = document.getElementById('description').value;
+            const imageInput = document.getElementById('incidentImage');
+
+            const adminPhone = "218919892021"; 
+
+            let message = `*بلاغ جديد من منصة صوت العربان* 🚨%0A%0A`;
+            message += `👤 *اسم المواطن:* ${name}%0A`;
+            message += `📍 *المكان:* ${location}%0A`;
+            message += `📌 *أقرب نقطة دالة:* ${landmark}%0A`;
+            message += `📞 *رقم الهاتف:* ${phone}%0A`;
+            message += `📝 *التفاصيل:* ${desc}%0A`;
+
+            if (imageInput.files && imageInput.files[0]) {
+                message += `🖼️ *ملاحظة:* تم إرفاق صورة للحادثة من قبل المواطن.%0A`;
+            }
+
+            const whatsappUrl = `https://wa.me/${adminPhone}?text=${message}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // عداد الزيارات التلقائي
+        window.addEventListener('DOMContentLoaded', () => {
+            let visits = localStorage.getItem('arabian_visitor_count');
+            if (!visits) {
+                visits = 1450; 
+            } else {
+                visits = parseInt(visits) + 1;
+            }
+            localStorage.setItem('arabian_visitor_count', visits);
+            document.getElementById('visitorCount').innerText = visits;
+        });
+    </script>
 </body>
 </html>
